@@ -23,7 +23,11 @@ model_name2path = {
                     'gpt2-large':gpt2_large_dict[server_name],
                     'gpt2-medium':gpt2_medium_dict[server_name],
                     'llama-7b-old': llama_7b_dict[server_name],
-                    'llama-7b': llama_7b_2_dict[server_name],
+                    # 'llama-7b': llama_7b_2_dict[server_name],
+                    # 'llama-7b': 'meta-llama/Llama-2-7b-hf',
+                    'llama-7b': 'NousResearch/Llama-2-7b-hf',
+                    # 'llama-7b': '/mnt/sphere/home/tfei/.cache/huggingface/hub/models--meta-llama--Llama-2-7b-hf/snapshots/01c7f73d771dfac7d292323805ebc428287df4f9',
                     'gpt2':gpt2_dict[server_name],
-                    'gpt2-xl':gpt2_xl_dict[server_name],
+                    # 'gpt2-xl':gpt2_xl_dict[server_name],
+                    'gpt2-xl': 'openai-community/gpt2-xl',
                 }

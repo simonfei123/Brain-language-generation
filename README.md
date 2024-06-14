@@ -23,6 +23,20 @@
 
 This is the official repo for our paper [Language Generation from Brain Recordings](https://arxiv.org/abs/2311.09889). Language generation from brain recordings is a novel approach that supports direct language generation with BCIs (brain-computer interfaces) without pre-defineng or pre-generating language candidates to select from.
 
+## Create Environment
++ For mac and linux:
+```
+virtualenv pyenv --python=3.10.12
+source pyenv/bin/activate
+pip install -r requirements.txt
+```
++ For Windows:
+```
+virtualenv pyenv --python=3.10.12
+pyenv\Scripts\activate
+pip install -r requirements.txt
+```
+
 
 ## Quick Start
 We have provided an example dataset to facilitate the replication of experiments. To run the example dataset, you can go into the sub-directory *language_generation/src* and use the following command:
@@ -30,11 +44,12 @@ We have provided an example dataset to facilitate the replication of experiments
 ```bash
 cd language_generation/src
 # model training and evaluation (runing BrainLLM)
-python main.py -task_name Pereira_example -cuda 0 -load_check_point False -model_name llama-7b -checkpoint_path example -batch_size 8 -lr 1e-4 -pos False -pretrain_lr 1e-3 -pretrain_epochs 10 -wandb none -mode all
+CUDA_VISIBLE_DEVICES=7 python main.py -task_name Pereira_example -cuda 0 -load_check_point False -model_name llama-7b -checkpoint_path example -batch_size 8 -lr 1e-4 -pos False -pretrain_lr 1e-3 -pretrain_epochs 10 -wandb none -mode all
 # control evaluation (runing PerBrainLLM)
 python main.py -task_name Pereira_example -cuda 0 -load_check_point False -model_name llama-7b -checkpoint_path example -batch_size 8 -lr 1e-4 -pos False -pretrain_lr 1e-3 -pretrain_epochs 10 -wandb none -input_method permutated -mode evaluate -output test_permutated
 # control evaluation (runing LLM)
 python main.py -task_name Pereira_example -cuda 0 -load_check_point False -model_name llama-7b -checkpoint_path example -batch_size 8 -lr 1e-4 -pos False -pretrain_lr 1e-3 -pretrain_epochs 10 -wandb none -input_method mask_input -mode evaluate -output test_nobrain
+python main.py -task_name Pereira_example -cuda 0 -load_check_point False -model_name gpt2-xl -checkpoint_path example -batch_size 8 -lr 1e-4 -pos False -pretrain_lr 1e-3 -pretrain_epochs 10 -wandb none -input_method without_brain -mode evaluate -output test_nobrain
 ```
 
 To run with [slurm](https://slurm.schedmd.com/documentation.html), you can also use the provided scripts in the sub-directory *language_generation/scripts* (remember to replace the name of conda environment and the path of the sub-directory *language_generation/scripts* according to your settings).
@@ -46,7 +61,7 @@ sh example.sh
 To run with the datasets utilized in our paper, please download the dataset from [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/d/04e8cfe6c9c743c69f08/) and unzip it. Use the parameter *-dataset_path* to specify the path of your unzip dataset.
 For example, if you unzip the dataset into your home directory as *~/released/*, then you can run the training and evaluation of BrainLLM and the participant 1 in Huth dataset using the following command:
 ```bash
-python main.py -task_name Huth_1 -cuda 0 -load_check_point False -model_name llama-7b -checkpoint_path Huth_1 -batch_size 8 -lr 1e-4 -pos False -pretrain_lr 1e-3 -pretrain_epochs 10 -wandb none -mode all -dataset_path ../../dataset/ -pos True
+CUDA_VISIBLE_DEVICES=7 python main.py -task_name Huth_1 -cuda 0 -load_check_point False -model_name llama-7b -checkpoint_path Huth_1 -batch_size 8 -lr 1e-4 -pos False -pretrain_lr 1e-3 -pretrain_epochs 10 -wandb none -mode all -dataset_path ../../dataset/ -pos True
 ``` 
 
 To evaluate the model performance, you can refer to the code in *language_generation/src/post_hoc_evaluate.py*
@@ -142,6 +157,12 @@ python language_generation/src/post_hoc_evaluatoion.py
 ```
 
 ### Dataset
+```bash
+wget https://cloud.tsinghua.edu.cn/seafhttp/files/7dc54be8-3767-4fe7-ad25-cc48705266b9/released.tar.gz
+tar -zxvf released.tar.gz -C dataset
+cd dataset/Huth
+find . -type f -name '*.gz' -exec gunzip '{}' \;
+```
 We test our approach on three public fMRI datasets: [Pereira's dataset](https://www.nature.com/articles/s41467-018-03068-4), [Huth's dataset](https://www.nature.com/articles/s41597-023-02437-z), and [Narratives dataset](https://www.nature.com/articles/s41597-021-01033-3). The brief introduction, ethical information, statistics, and useage details of these datasets are provied in our paper.
 A preprocessed verison dataset is released in [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/d/04e8cfe6c9c743c69f08/), where the sub-directory of *Pereira*, *Huth*, and *Narratives* contain the preprocessed data for each participant and story in Pereira's dataset, Huth's dataset, and Narratives dataset, respectively. 
 

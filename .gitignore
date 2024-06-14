@@ -21,3 +21,4 @@ word_rate/results/*
 trash/
 language_generation/src/modules/config.py
 paper/
+released.tar.gz
